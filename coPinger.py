@@ -7,6 +7,10 @@
 # Copyright (C) 2021 Sleeping Coconut https://sleepingcoconut.com
 
 #----VARIABLES--------------------------------------------------------------------------------------
+#Requirements
+PYTHON_REQUIRED_VERSION=(3,3)
+REQUIRED_TOOLS=(['ping'])
+
 #Files
 HOSTS_FILE = 'machines.txt'
 REPORT_FILE = 'copinger_report.json'
@@ -31,8 +35,6 @@ REPORT_INDENT=2
 # }}}
 
 #----PYTHON VERSION CHECK---------------------------------------------------------------------------
-PYTHON_REQUIRED_VERSION=(3,3)
-
 import sys
 if sys.version_info < PYTHON_REQUIRED_VERSION:
     sys.stderr.write('Python {}.{} is required. Current version: {}.{}\n'.format(
@@ -43,9 +45,7 @@ if sys.version_info < PYTHON_REQUIRED_VERSION:
     )
     sys.exit(1)
 
-#----DEPENDENCIES-----------------------------------------------------------------------------------
-REQUIRED_TOOLS=(['ping'])
-
+#----DEPENDENCIES CHECK-----------------------------------------------------------------------------
 from shutil import which
 for tool in REQUIRED_TOOLS:
     if which(tool) is None:
