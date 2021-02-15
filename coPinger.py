@@ -1,33 +1,12 @@
 #!/usr/bin/env python3
 #build 3
 
-#----------VERSION CHECK----------
-PYTHON_REQUIRED_VERSION=(3,0)
-
-import sys
-if sys.version_info < PYTHON_REQUIRED_VERSION:
-    sys.stderr.write('Python {}.{} is required. Current version: {}.{}\n'.format(
-        PYTHON_REQUIRED_VERSION[0],
-        PYTHON_REQUIRED_VERSION[1],
-        sys.version_info[0],
-        sys.version_info[1])
-    )
-    sys.exit(1)
-#--------------------
-
-import platform                     # For getting the operating system name
-import os                           # For getting absolute paths
-from subprocess import PIPE, run    # For executing a shell command
-import json                         # For writing json file
-import concurrent.futures           # For scheduling threads
-
-
 # This script will read HOSTS_FILE and ping machines on it. It will generate a json report.
 # Requirements: - Plaint text file with comma separated entries. Ex: router,192.168.1.1
 
 # Copyright (C) 2021 Sleeping Coconut https://sleepingcoconut.com
 
-#----------VARIABLES----------
+#----VARIABLES--------------------------------------------------------------------------------------
 #Files
 HOSTS_FILE = 'machines.txt'
 REPORT_FILE = 'copinger_report.json'
@@ -40,16 +19,38 @@ REPORT_INDENT=2
 
 # Zero Clause BSD license {{{
 #
-# Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted.
+# Permission to use, copy, modify, and/or distribute this software for any purpose with or without 
+# fee is hereby granted.
 #
-# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL 
-# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, 
-# INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN 
-# AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE 
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS 
+# SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+# AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT,
+# NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
 # OF THIS SOFTWARE.
 # }}}
 
-#----------FUNCTIONS----------
+#----PYTHON VERSION CHECK---------------------------------------------------------------------------
+PYTHON_REQUIRED_VERSION=(3,0)
+
+import sys
+if sys.version_info < PYTHON_REQUIRED_VERSION:
+    sys.stderr.write('Python {}.{} is required. Current version: {}.{}\n'.format(
+        PYTHON_REQUIRED_VERSION[0],
+        PYTHON_REQUIRED_VERSION[1],
+        sys.version_info[0],
+        sys.version_info[1])
+    )
+    sys.exit(1)
+
+#----IMPORTS----------------------------------------------------------------------------------------
+import platform                     # For getting the operating system name
+import os                           # For getting absolute paths
+from subprocess import PIPE, run    # For executing a shell command
+import json                         # For writing json file
+import concurrent.futures           # For scheduling threads
+
+#----FUNCTIONS--------------------------------------------------------------------------------------
 def allIsGood(): # main support: only executed if no exceptions raised.
     print('-> All done.')
 
@@ -64,7 +65,7 @@ def checkLen(matrix): # readFile support: empty fields detection
             if not column:
                 raise NameError('Error processing hosts file: malformed. Field may be missing.')
 
-def readFile(): # Reads file
+def readFile(): # reads file
     try:
         reader=open(HOSTS_FILE_FULLPATH, 'r')
     except:
@@ -76,10 +77,12 @@ def readFile(): # Reads file
                 #debug(currentline[0]+'-'+currentline[1])
                 hosts.append([currentline[0],currentline[1]])
             except IndexError:
-                raise NameError('Error processing hosts file: malformed. Field or comma separator may be missing.')
+                raise NameError('Error processing hosts file: malformed. ' \
+                                'Field or comma separator may be missing.')
         checkLen(hosts)
 
-def ping(ip): # executes ping to 'ip' argument. Modified from: https://stackoverflow.com/questions/2953462/pinging-servers-in-python
+def ping(ip): # executes ping to 'ip' argument.
+              # Modified from: https://stackoverflow.com/questions/2953462/pinging-servers-in-python
     debug('executing ping to '+ip)
     # Option for the number of packets as a function of
     param = '-n' if platform.system().lower()=='windows' else '-c'
@@ -118,7 +121,7 @@ def writeReport(): # writes JSON report
     else:
         json.dump(results, writer, indent = REPORT_INDENT)
 
-#----------SCRIPT----------
+#----SCRIPT-----------------------------------------------------------------------------------------
 hosts = []      # stores read data
 results = []    # stores data before write
 HOSTS_FILE_FULLPATH = os.path.dirname(os.path.realpath(__file__)) + '/' + HOSTS_FILE
