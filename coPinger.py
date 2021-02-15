@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-#build 3
+#build 4
 
 # This script will read HOSTS_FILE and ping machines on it. It will generate a json report.
 # Requirements: - Plaint text file with comma separated entries. Ex: router,192.168.1.1
@@ -31,7 +31,7 @@ REPORT_INDENT=2
 # }}}
 
 #----PYTHON VERSION CHECK---------------------------------------------------------------------------
-PYTHON_REQUIRED_VERSION=(3,0)
+PYTHON_REQUIRED_VERSION=(3,3)
 
 import sys
 if sys.version_info < PYTHON_REQUIRED_VERSION:
@@ -42,6 +42,23 @@ if sys.version_info < PYTHON_REQUIRED_VERSION:
         sys.version_info[1])
     )
     sys.exit(1)
+
+#----DEPENDENCIES-----------------------------------------------------------------------------------
+REQUIRED_TOOLS=(['ping'])
+
+from shutil import which
+for tool in REQUIRED_TOOLS:
+    if which(tool) is None:
+        sys.stderr.write('One o more required tools are missing in your system. ' \
+                        'Please install them or make them avaiable in PATH.\n' \
+                        'Required tools: ')
+        for tool in REQUIRED_TOOLS:
+            sys.stderr.write(tool)
+            if tool is not REQUIRED_TOOLS[-1]:
+                sys.stderr.write(', ')
+            else:
+                sys.stderr.write('.\n')
+        exit(1)
 
 #----IMPORTS----------------------------------------------------------------------------------------
 import platform                     # For getting the operating system name
