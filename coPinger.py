@@ -35,6 +35,7 @@ REPORT_FILE = 'copinger_report.json'
 #Script behaviour
 DEBUG=0
 SIMULTANEOUS_PINGS=4
+SIMULTANEOUS_MAX_PINGS=51
 REPORT_INDENT=2
 
 # Zero Clause BSD license {{{
@@ -125,7 +126,7 @@ REPORT_FILE_FULLPATH = os.path.dirname(os.path.realpath(__file__)) + '/' + REPOR
 
 try:
     readFile()
-    if SIMULTANEOUS_PINGS >= 51:
+    if SIMULTANEOUS_PINGS >= SIMULTANEOUS_MAX_PINGS:
         raise NameError('unsafe simultaneous pings amount. Stopping.')
     elif SIMULTANEOUS_PINGS >= 2:
         print('-> Working (async mode)...')
