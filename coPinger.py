@@ -1,5 +1,20 @@
 #!/usr/bin/env python3
-#build 2
+#build 3
+
+#----------VERSION CHECK----------
+PYTHON_REQUIRED_VERSION=(3,0)
+
+import sys
+if sys.version_info < PYTHON_REQUIRED_VERSION:
+    sys.stderr.write('Python {}.{} is required. Current version: {}.{}\n'.format(
+        PYTHON_REQUIRED_VERSION[0],
+        PYTHON_REQUIRED_VERSION[1],
+        sys.version_info[0],
+        sys.version_info[1])
+    )
+    sys.exit(1)
+#--------------------
+
 import platform                     # For getting the operating system name
 import os                           # For getting absolute paths
 from subprocess import PIPE, run    # For executing a shell command
@@ -10,7 +25,7 @@ import concurrent.futures           # For scheduling threads
 # This script will read HOSTS_FILE and ping machines on it. It will generate a json report.
 # Requirements: - Plaint text file with comma separated entries. Ex: router,192.168.1.1
 
-# Copyright (C) 2020 Sleeping Coconut https://sleepingcoconut.com
+# Copyright (C) 2021 Sleeping Coconut https://sleepingcoconut.com
 
 #----------VARIABLES----------
 #Files
