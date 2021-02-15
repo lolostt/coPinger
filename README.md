@@ -1,5 +1,3 @@
-
-
 # coPinger
 This script will read HOSTS_FILE and ping machines to them. It will generate a REPORT_FILE.
 
