@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
-#build 4
+#build 5
 
 # This script will read HOSTS_FILE and ping machines on it. It will generate a json report.
-# Requirements: - Plaint text file with comma separated entries. Ex: router,192.168.1.1
+# Requirements: 
+# - Plain text file with comma separated entries. Ex: router,192.168.1.1
 
-# Copyright (C) 2021 Sleeping Coconut https://sleepingcoconut.com
+# Copyright (C) 2024 Sleeping Coconut https://sleepingcoconut.com
 
 #----VARIABLES--------------------------------------------------------------------------------------
-#Requirements
-PYTHON_REQUIRED_VERSION=(3,3)
-REQUIRED_TOOLS=(['ping'])
-
 #Files
 HOSTS_FILE = 'machines.txt'
 REPORT_FILE = 'copinger_report.json'
@@ -18,8 +15,12 @@ REPORT_FILE = 'copinger_report.json'
 #Script behaviour
 DEBUG=0
 SIMULTANEOUS_PINGS=4
-SIMULTANEOUS_MAX_PINGS=51
+SIMULTANEOUS_PINGS_LIMIT=51
 REPORT_INDENT=2
+
+#Requirements
+PYTHON_REQUIRED_VERSION=(3,3)
+REQUIRED_TOOLS=(['ping'])
 
 # Zero Clause BSD license {{{
 #
@@ -146,7 +147,7 @@ REPORT_FILE_FULLPATH = os.path.dirname(os.path.realpath(__file__)) + '/' + REPOR
 
 try:
     readFile()
-    if SIMULTANEOUS_PINGS >= SIMULTANEOUS_MAX_PINGS:
+    if SIMULTANEOUS_PINGS >= SIMULTANEOUS_PINGS_LIMIT:
         raise NameError('unsafe simultaneous pings amount. Stopping.')
     elif SIMULTANEOUS_PINGS >= 2:
         print('-> Working (async mode)...')
