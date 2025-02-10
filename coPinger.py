@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-#build 5
+#build 6
 
 # This script will read HOSTS_FILE and ping machines on it. It will generate a json report.
 # Requirements: 
 # - Plain text file with comma separated entries. Ex: router,192.168.1.1
 
-# Copyright (C) 2024 Sleeping Coconut https://sleepingcoconut.com
+# Copyright (C) 2025 Sleeping Coconut https://sleepingcoconut.com
 
 #----VARIABLES--------------------------------------------------------------------------------------
 #Files
@@ -17,10 +17,6 @@ DEBUG=0
 SIMULTANEOUS_PINGS=4
 SIMULTANEOUS_PINGS_LIMIT=51
 REPORT_INDENT=2
-
-#Requirements
-PYTHON_REQUIRED_VERSION=(3,3)
-REQUIRED_TOOLS=(['ping'])
 
 # Zero Clause BSD license {{{
 #
@@ -34,6 +30,11 @@ REQUIRED_TOOLS=(['ping'])
 # NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
 # OF THIS SOFTWARE.
 # }}}
+
+#----HARDCODED VARIABLES----------------------------------------------------------------------------
+#Requirements
+PYTHON_REQUIRED_VERSION=(3,3)
+REQUIRED_TOOLS=(['ping'])
 
 #----PYTHON VERSION CHECK---------------------------------------------------------------------------
 import sys
@@ -79,7 +80,6 @@ def debug(any): # main support: debug mode
 def checkLen(matrix): # readFile support: empty fields detection
     for row in matrix:
         for column in row:
-            #debug('pass on '+str(row)+' -> '+str(column))
             if not column:
                 raise NameError('Error processing hosts file: malformed. Field may be missing.')
 
@@ -92,7 +92,6 @@ def readFile(): # reads file
         for line in reader:
             try:
                 currentline = line.strip().split(',')
-                #debug(currentline[0]+'-'+currentline[1])
                 hosts.append([currentline[0],currentline[1]])
             except IndexError:
                 raise NameError('Error processing hosts file: malformed. ' \
