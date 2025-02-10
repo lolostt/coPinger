@@ -2,7 +2,7 @@
 This script will read HOSTS_FILE and ping machines to them. It will generate a REPORT_FILE.
 
 ## Prerequisites
- - Python3-capable system. Tested on macOS 10.15.
+ - Python3-capable system, minimum version: Python 3.3. Tested on macOS 13 running Python 3.12.
  - [ping](https://en.wikipedia.org/wiki/Ping_(networking_utility)) utility avaiable from PATH.
 
 ### Installing
